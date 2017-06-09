@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 public class MineSweeper {
     static final int WIDTH = 10;
@@ -17,21 +18,24 @@ public class MineSweeper {
     
     public MineSweeper() {
         frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(WIDTH * 20, HEIGHT * 20);
         frame.setResizable(false);
         frame.setLayout(new GridLayout(HEIGHT, WIDTH));
         
-        for (int i = 0; i < WIDTH * HEIGHT; ++ i) {
-            final JButton b = new JButton();
-            // Uncomment the following line, adding a listener that:
-            // 1. Initializes the mines if necessary.
-            // 2. Display either the mine if there is one, or the number of neighboring cells contain mines.
-            // Use a lambda here.
-            // b.addActionListener(...);
-            // Uncomment the following line, add a listener that displays a dialog box if mines have been swept.
-            // Use a method handle here.
-            // b.addActionListener(...);
-            frame.add(b);
+        for (int y = 0; y < HEIGHT; ++ y) {
+            for (int x = 0; x < WIDTH; ++ x) {
+                final JButton b = new JButton();
+                // Uncomment the following line, adding a listener that:
+                // 1. Initializes the mines if necessary.
+                // 2. Display either the mine if there is one, or the number of neighboring cells contain mines.
+                // Use a lambda here.
+                // b.addActionListener(...);
+                // Uncomment the following line, add a listener that displays a dialog box if mines have been swept.
+                // Use a method handle here.
+                // b.addActionListener(...);
+                frame.add(b);
+            }
         }
         
         frame.setVisible(true);
