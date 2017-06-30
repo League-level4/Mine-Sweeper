@@ -9,4 +9,5 @@ aspects of Java introduced in Java 8. Specifically, it will cover:
 - [Lambda Expressions](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
 - [Method References](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
 
-Follow all the instructions laid out in MineSweeper.java.
+To complete the recipe, please follow all the instructions laid out in
+MineSweeper.java.
