@@ -1,5 +1,8 @@
 package org.jointheleague.level4.minesweeper;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -12,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -42,8 +46,20 @@ public class MineSweeper {
      * @param firstCellY Y-index of first cell opened. This cannot be a mine.
      */
     private void initializeMines(int firstCellX, int firstCellY) {
-        // TODO fill in
-        // Hint, use `Optional.of(...)` to create a non-empty `Optional`.
+        boolean[][] mines = new boolean[HEIGHT][WIDTH];
+        
+        for (int num = 0; num < NUM_MINES;) {
+            int y = rng.nextInt(HEIGHT);
+            int x = rng.nextInt(WIDTH);
+            
+            if (!mines[y][x] && !(y == firstCellY && x == firstCellX)) {
+                mines[y][x] = true;
+                ++ num;
+            }
+        }
+        
+        this.mines = Optional.of(mines);
+        this.numCellsRemaining = HEIGHT * WIDTH - NUM_MINES;
     }
     
     /**
@@ -55,8 +71,16 @@ public class MineSweeper {
      * @return The number of neighboring cells that are mines (0-8).
      */
     private Integer getNeighboringMinesCount(int x, int y) {
-        // TODO fill in
-        return null;
+        return mines.
+            map(mines ->
+                IntStream.range(max(0, y-1), min(HEIGHT, y+2)).flatMap(neighborY ->
+                    IntStream.range(max(0, x-1), min(WIDTH, x+2)).map(neighborX ->
+                        !(neighborX == x && neighborY == y) && mines[neighborY][neighborX] ? 1 : 0
+                    )
+                ).
+                reduce(0, (left, right) -> left + right)
+            ).
+            orElse(0);
     }
     
     /**
@@ -67,12 +91,19 @@ public class MineSweeper {
      * @param unused Just here so that method can be passed as ActionListener.
      */
     private void resetGame(Object unused) {
-        // TODO fill in
+        mines = Optional.empty();
+        for (int y = 0; y < HEIGHT; ++ y)  {
+            for (int x = 0; x < WIDTH; ++ x) {
+                buttons[y][x].setText(null);
+                buttons[y][x].setEnabled(true);
+            }
+        }
+        frame.repaint();
     }
     
     private void createAndShowFrame() {
         final JMenuItem resetMenuItem = new JMenuItem("Reset");
-        resetMenuItem.addActionListener(null); // TODO replace null with method reference that resets the game
+        resetMenuItem.addActionListener(this::resetGame);
         
         final JMenu gameMenu = new JMenu("Game");
         gameMenu.add(resetMenuItem);
@@ -82,7 +113,7 @@ public class MineSweeper {
         
         final JPanel controlPanel = new JPanel();
         final JButton resetButton = new JButton("Reset");
-        resetButton.addActionListener(null); // TODO replace null with method reference that resets the game
+        resetButton.addActionListener(this::resetGame);
         controlPanel.add(resetButton);
         
         final JPanel gameBoardPanel = new JPanel();
@@ -107,12 +138,37 @@ public class MineSweeper {
                 //    - If all cells are open, display "You Win" in a dialog box
                 //    - Extra credit: If the number of neighboring cells is 0,
                 //      automatically open all neighboring cells
-                b.addActionListener(null); // TODO replace null with lambda expression
+                b.addActionListener(
+                    e -> {
+                        if (!mines.isPresent()) initializeMines(x, y);
+                        b.setEnabled(false);
+                        if (mines.get()[y][x]) {
+                            b.setText("X");
+                            JOptionPane.showMessageDialog(null, "You Lose!");
+                        } else {
+                            int neighboringMinesCount = getNeighboringMinesCount(x, y);
+                            if (neighboringMinesCount > 0) {
+                                b.setText(Integer.toString(neighboringMinesCount));
+                            } else {
+                                IntStream.range(max(0, y-1), min(HEIGHT, y+2)).forEach(neighborY ->
+                                    IntStream.range(max(0, x-1), min(WIDTH, x+2)).forEach(neighborX ->
+                                        buttons[neighborY][neighborX].doClick(0)
+                                    )
+                                );
+                                frame.repaint();
+                            }
+                            
+                            numCellsRemaining --;
+                            if (numCellsRemaining == 0) {
+                                JOptionPane.showMessageDialog(null, "You Win!");
+                            }
+                        }
+                    }
+                );
                 gameBoardPanel.add(b);
             })
         );
         
-        final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(WIDTH * CELL_SIZE, (HEIGHT + 1) * CELL_SIZE + 27);
         frame.setLayout(new BorderLayout());
