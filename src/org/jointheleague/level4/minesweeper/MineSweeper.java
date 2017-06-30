@@ -1,8 +1,10 @@
 package org.jointheleague.level4.minesweeper;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import javax.swing.JButton;
@@ -24,6 +26,8 @@ public class MineSweeper {
     private static final int CELL_SIZE = 20;
     private static final int NUM_MINES = 15;
     
+    private final JButton[][] buttons = new JButton[HEIGHT][WIDTH];
+    private final Random rng = new Random();
     private Optional<boolean[][]> mines = Optional.empty();
     private int numCellsRemaining;
     
@@ -79,6 +83,7 @@ public class MineSweeper {
         
         final JPanel gameBoardPanel = new JPanel();
         gameBoardPanel.setSize(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE);
+        gameBoardPanel.setBackground(Color.WHITE);
         gameBoardPanel.setLayout(new GridLayout(HEIGHT, WIDTH));
         IntStream.range(0, HEIGHT).forEach(y ->
             IntStream.range(0, WIDTH).forEach(x -> {
