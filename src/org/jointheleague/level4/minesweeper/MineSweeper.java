@@ -62,7 +62,7 @@ public class MineSweeper {
     /**
      * Resets the game by:
      * 1. Setting the `mines` variable back to empty.
-     * 2. Setting all the buttons states back to enabled = true.
+     * 2. Clearing the button texts, and setting button states to enabled.
      * 
      * @param unused Just here so that method can be passed as ActionListener.
      */
