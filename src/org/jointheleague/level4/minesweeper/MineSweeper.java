@@ -26,15 +26,17 @@ public class MineSweeper {
     private static final int CELL_SIZE = 20;
     private static final int NUM_MINES = 15;
     
+    final JFrame frame = new JFrame();
     private final JButton[][] buttons = new JButton[HEIGHT][WIDTH];
     private final Random rng = new Random();
     private Optional<boolean[][]> mines = Optional.empty();
     private int numCellsRemaining;
     
     /**
-     * Initialize the `mines` variable with `NUM_MINES` randomly distributed
-     * mines, and the `numCellsRemaining` variable to the number of non-mine
-     * cells (`WIDTH` * `HEIGHT` - `NUM_MINES`).
+     * Initializes:
+     * 1. The `mines` variable with `NUM_MINES` randomly distributed mines
+     * 2. The `numCellsRemaining` variable to the number of non-mine
+     *    cells (`WIDTH` * `HEIGHT` - `NUM_MINES`).
      * 
      * @param firstCellX X-index of first cell opened. This cannot be a mine.
      * @param firstCellY Y-index of first cell opened. This cannot be a mine.
@@ -58,7 +60,9 @@ public class MineSweeper {
     }
     
     /**
-     * Resets the game by setting the `mines` variable back to empty.
+     * Resets the game by:
+     * 1. Setting the `mines` variable back to empty.
+     * 2. Setting all the buttons states back to enabled = true.
      * 
      * @param unused Just here so that method can be passed as ActionListener.
      */
@@ -90,6 +94,7 @@ public class MineSweeper {
                 // This code loops through the X and Y indexes,
                 // creating a button for each cell.
                 final JButton b = new JButton();
+                buttons[y][x] = b;
                 // When the cell button is pressed, it should:
                 // 1. Initializes the mines if it is not yet initialized.
                 // 2. If the button is a mine:
