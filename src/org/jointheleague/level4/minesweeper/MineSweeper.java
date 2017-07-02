@@ -6,9 +6,11 @@ import static java.lang.Math.min;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,15 +50,18 @@ public class MineSweeper {
     private void initializeMines(int firstCellX, int firstCellY) {
         boolean[][] mines = new boolean[HEIGHT][WIDTH];
         
-        for (int num = 0; num < NUM_MINES;) {
-            int y = rng.nextInt(HEIGHT);
-            int x = rng.nextInt(WIDTH);
-            
-            if (!mines[y][x] && !(y == firstCellY && x == firstCellX)) {
-                mines[y][x] = true;
-                ++ num;
-            }
-        }
+        Stream.
+            generate(
+                () -> new Point(rng.nextInt(WIDTH), rng.nextInt(HEIGHT))
+            ).
+            filter(
+                pt -> pt.x != firstCellX && pt.y != firstCellY
+            ).
+            distinct().
+            limit(NUM_MINES).
+            forEach(
+                pt -> mines[pt.y][pt.x] = true
+            );
         
         this.mines = Optional.of(mines);
         this.numCellsRemaining = HEIGHT * WIDTH - NUM_MINES;
@@ -92,12 +97,12 @@ public class MineSweeper {
      */
     private void resetGame(Object unused) {
         mines = Optional.empty();
-        for (int y = 0; y < HEIGHT; ++ y)  {
-            for (int x = 0; x < WIDTH; ++ x) {
+        IntStream.range(0, HEIGHT).forEach(y ->
+            IntStream.range(0, WIDTH).forEach(x -> {
                 buttons[y][x].setText(null);
                 buttons[y][x].setEnabled(true);
-            }
-        }
+            })
+        );
         frame.repaint();
     }
     
