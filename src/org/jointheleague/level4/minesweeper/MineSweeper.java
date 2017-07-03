@@ -104,7 +104,8 @@ public class MineSweeper {
                 //    - Change the button text to the number of neighboring
                 //      cells are mines.
                 //    - Decrement `numCellsRemaining`
-                //    - If all cells are open, display "You Win" in a dialog box
+                //    - If all cells are open (i.e., numCellsRemaining == 0),
+                //      display "You Win" in a dialog box
                 //    - Extra credit: If the number of neighboring cells is 0,
                 //      automatically open all neighboring cells
                 b.addActionListener(null); // TODO replace null with lambda expression
