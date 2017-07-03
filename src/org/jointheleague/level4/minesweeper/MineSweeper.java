@@ -18,7 +18,10 @@ import javax.swing.WindowConstants;
 
 /**
  * Implement the Mine Sweeper game by following the instructions in the
- * comments. All instructions are marked with "TODO".
+ * comments.
+ * 
+ * All instructions are marked with "TO DO" tags, and will have a blue
+ * indicator on the right side, by the scroll bar.
  */
 public class MineSweeper {
     private static final int WIDTH = 10;
@@ -30,18 +33,18 @@ public class MineSweeper {
     private final JButton[][] buttons = new JButton[HEIGHT][WIDTH];
     private final Random rng = new Random();
     private Optional<boolean[][]> mines = Optional.empty();
-    private int numCellsRemaining;
+    private int numCellsToOpen;
     
     /**
      * Initializes:
      * 1. The `mines` variable with `NUM_MINES` randomly distributed mines
-     * 2. The `numCellsRemaining` variable to the number of non-mine
+     * 2. The `numCellsToOpen` variable to the number of non-mine
      *    cells (`WIDTH` * `HEIGHT` - `NUM_MINES`).
      * 
-     * @param firstCellX X-index of first cell opened. This cannot be a mine.
-     * @param firstCellY Y-index of first cell opened. This cannot be a mine.
+     * @param firstCellCol Column of first cell opened. This cannot be a mine.
+     * @param firstCellRow Row of first cell opened. This cannot be a mine.
      */
-    private void initializeMines(int firstCellX, int firstCellY) {
+    private void initializeMines(int firstCellCol, int firstCellRow) {
         // TODO fill in
         // Hint, use `Optional.of(...)` to create a non-empty `Optional`.
     }
@@ -50,11 +53,11 @@ public class MineSweeper {
      * Inspects a given cell, and count the number of neighboring cells that
      * are mines.
      * 
-     * @param x X-index of cell to inspect.
-     * @param y Y-index of cell to inspect.
+     * @param col Column of cell to inspect.
+     * @param row Row of cell to inspect.
      * @return The number of neighboring cells that are mines (0-8).
      */
-    private Integer getNeighboringMinesCount(int x, int y) {
+    private Integer getNeighboringMinesCount(int col, int row) {
         // TODO fill in
         return null;
     }
@@ -89,12 +92,12 @@ public class MineSweeper {
         gameBoardPanel.setSize(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE);
         gameBoardPanel.setBackground(Color.WHITE);
         gameBoardPanel.setLayout(new GridLayout(HEIGHT, WIDTH));
-        IntStream.range(0, HEIGHT).forEach(y ->
-            IntStream.range(0, WIDTH).forEach(x -> {
-                // This code loops through the X and Y indexes,
+        IntStream.range(0, HEIGHT).forEach(row ->
+            IntStream.range(0, WIDTH).forEach(col -> {
+                // This code loops through the rows and columns,
                 // creating a button for each cell.
                 final JButton b = new JButton();
-                buttons[y][x] = b;
+                buttons[row][col] = b;
                 // When the cell button is pressed, it should:
                 // 1. Initializes the mines if it is not yet initialized.
                 // 2. If the button is a mine:
@@ -103,8 +106,8 @@ public class MineSweeper {
                 //    Otherwise:
                 //    - Change the button text to the number of neighboring
                 //      cells are mines.
-                //    - Decrement `numCellsRemaining`
-                //    - If all cells are open (i.e., numCellsRemaining == 0),
+                //    - Decrement `numCellsToOpen`
+                //    - If all cells are open (i.e., numCellsToOpen == 0),
                 //      display "You Win" in a dialog box
                 //    - Extra credit: If the number of neighboring cells is 0,
                 //      automatically open all neighboring cells
