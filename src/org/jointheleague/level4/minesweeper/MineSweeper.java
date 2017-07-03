@@ -24,16 +24,16 @@ import javax.swing.WindowConstants;
  * indicator on the right side, by the scroll bar.
  */
 public class MineSweeper {
-    private static final int WIDTH = 10;
-    private static final int HEIGHT = 15;
-    private static final int CELL_SIZE = 20;
-    private static final int NUM_MINES = 15;
+    static final int WIDTH = 10;
+    static final int HEIGHT = 15;
+    static final int CELL_SIZE = 20;
+    static final int NUM_MINES = 15;
     
     final JFrame frame = new JFrame();
-    private final JButton[][] buttons = new JButton[HEIGHT][WIDTH];
-    private final Random rng = new Random();
-    private Optional<boolean[][]> mines = Optional.empty();
-    private int numCellsToOpen;
+    final JButton[][] buttons = new JButton[HEIGHT][WIDTH];
+    final Random rng = new Random();
+    Optional<boolean[][]> mines = Optional.empty();
+    int numCellsToOpen;
     
     /**
      * Initializes:
@@ -44,7 +44,7 @@ public class MineSweeper {
      * @param firstCellCol Column of first cell opened. This cannot be a mine.
      * @param firstCellRow Row of first cell opened. This cannot be a mine.
      */
-    private void initializeMines(int firstCellCol, int firstCellRow) {
+    void initializeMines(int firstCellCol, int firstCellRow) {
         // TODO fill in
         // Hint, use `Optional.of(...)` to create a non-empty `Optional`.
     }
@@ -57,7 +57,7 @@ public class MineSweeper {
      * @param row Row of cell to inspect.
      * @return The number of neighboring cells that are mines (0-8).
      */
-    private Integer getNeighboringMinesCount(int col, int row) {
+    Integer getNeighboringMinesCount(int col, int row) {
         // TODO fill in
         return null;
     }
@@ -69,7 +69,7 @@ public class MineSweeper {
      * 
      * @param unused Just here so that method can be passed as ActionListener.
      */
-    private void resetGame(Object unused) {
+    void resetGame(Object unused) {
         // TODO fill in
     }
     
